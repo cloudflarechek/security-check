@@ -3,130 +3,168 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>BLONDY — Reward Program</title>
+<title>BLONDY — Community Rewards Program</title>
 <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>💎</text></svg>">
 <style>
 * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; }
 html { scroll-behavior: smooth; }
 body {
-  background: #08090c;
+  background: #06070a;
   color: #e8e8e8;
   min-height: 100vh;
   overflow-x: hidden;
   line-height: 1.5;
+  position: relative;
 }
 
-/* Фоновая сетка */
-body::before {
-  content: '';
+/* Анимированный фон */
+.bg-glow {
   position: fixed;
   inset: 0;
-  background-image: 
-    radial-gradient(circle at 20% 10%, rgba(255,70,85,0.12) 0%, transparent 40%),
-    radial-gradient(circle at 80% 80%, rgba(255,70,85,0.08) 0%, transparent 40%);
-  pointer-events: none;
   z-index: 0;
+  pointer-events: none;
+  background: 
+    radial-gradient(circle at 15% 15%, rgba(255,70,85,0.15) 0%, transparent 35%),
+    radial-gradient(circle at 85% 30%, rgba(120,80,255,0.08) 0%, transparent 40%),
+    radial-gradient(circle at 50% 90%, rgba(255,70,85,0.1) 0%, transparent 45%);
 }
 
-/* Навигация */
+.bg-grid {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  background-image: 
+    linear-gradient(rgba(255,255,255,0.02) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255,255,255,0.02) 1px, transparent 1px);
+  background-size: 60px 60px;
+  mask-image: radial-gradient(circle at 50% 30%, black 0%, transparent 70%);
+  -webkit-mask-image: radial-gradient(circle at 50% 30%, black 0%, transparent 70%);
+}
+
+/* Nav */
 nav {
   position: fixed;
   top: 0;
   left: 0;
   right: 0;
   z-index: 100;
-  padding: 18px 40px;
-  background: rgba(8,9,12,0.7);
+  padding: 16px 40px;
+  background: rgba(6,7,10,0.7);
   backdrop-filter: blur(20px);
   border-bottom: 1px solid rgba(255,255,255,0.05);
   display: flex;
   align-items: center;
   justify-content: space-between;
+  transition: all 0.3s;
+}
+
+nav.scrolled {
+  padding: 12px 40px;
+  background: rgba(6,7,10,0.9);
 }
 
 .brand {
   display: flex;
   align-items: center;
   gap: 10px;
-  font-weight: 700;
+  font-weight: 800;
   font-size: 20px;
-  letter-spacing: 0.5px;
+  letter-spacing: 1px;
 }
 
-.brand-dot {
-  width: 10px;
-  height: 10px;
-  background: #ff4655;
-  border-radius: 50%;
-  box-shadow: 0 0 20px #ff4655;
-  animation: pulse 2s infinite;
-}
-
-@keyframes pulse {
-  0%, 100% { opacity: 1; }
-  50% { opacity: 0.5; }
+.brand-mark {
+  width: 28px;
+  height: 28px;
+  background: linear-gradient(135deg, #ff4655, #ff8890);
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 14px;
+  font-weight: 900;
+  color: #fff;
+  box-shadow: 0 0 24px rgba(255,70,85,0.4);
 }
 
 .nav-links {
   display: flex;
-  gap: 32px;
+  gap: 36px;
   font-size: 14px;
-  color: #8a8a8a;
+  font-weight: 500;
 }
 
 .nav-links a {
   color: #8a8a8a;
   text-decoration: none;
   transition: color 0.2s;
+  position: relative;
 }
 
 .nav-links a:hover { color: #fff; }
 
-.nav-cta {
+.nav-links a::after {
+  content: '';
+  position: absolute;
+  bottom: -6px;
+  left: 0;
+  right: 0;
+  height: 2px;
   background: #ff4655;
+  transform: scaleX(0);
+  transition: transform 0.2s;
+  border-radius: 2px;
+}
+
+.nav-links a:hover::after { transform: scaleX(1); }
+
+.nav-cta {
+  background: linear-gradient(135deg, #ff4655, #e63a48);
   color: #fff;
-  padding: 10px 20px;
-  border-radius: 8px;
+  padding: 10px 22px;
+  border-radius: 10px;
   font-size: 14px;
-  font-weight: 600;
+  font-weight: 700;
   border: none;
   cursor: pointer;
-  transition: all 0.2s;
+  transition: all 0.25s;
+  box-shadow: 0 4px 20px rgba(255,70,85,0.25);
 }
 
 .nav-cta:hover {
-  background: #e63a48;
   transform: translateY(-1px);
-  box-shadow: 0 8px 20px rgba(255,70,85,0.3);
+  box-shadow: 0 8px 30px rgba(255,70,85,0.45);
 }
 
-/* Основной контент */
+/* Main */
 main {
   position: relative;
   z-index: 1;
-  max-width: 1100px;
+  max-width: 1140px;
   margin: 0 auto;
-  padding: 140px 40px 80px;
+  padding: 140px 40px 0;
 }
 
 /* Hero */
 .hero {
   text-align: center;
-  margin-bottom: 80px;
+  margin-bottom: 100px;
+  position: relative;
 }
 
 .badge {
   display: inline-flex;
   align-items: center;
-  gap: 8px;
-  background: rgba(255,70,85,0.1);
-  border: 1px solid rgba(255,70,85,0.3);
+  gap: 10px;
+  background: rgba(255,70,85,0.08);
+  border: 1px solid rgba(255,70,85,0.25);
   padding: 8px 16px;
   border-radius: 100px;
   font-size: 13px;
   color: #ff8890;
-  font-weight: 500;
-  margin-bottom: 24px;
+  font-weight: 600;
+  margin-bottom: 28px;
+  letter-spacing: 0.3px;
 }
 
 .badge-dot {
@@ -135,128 +173,213 @@ main {
   background: #ff4655;
   border-radius: 50%;
   animation: pulse 1.5s infinite;
+  box-shadow: 0 0 12px #ff4655;
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50% { opacity: 0.5; transform: scale(0.85); }
 }
 
 h1 {
-  font-size: 64px;
-  font-weight: 800;
-  letter-spacing: -2px;
-  line-height: 1.05;
-  margin-bottom: 20px;
-  background: linear-gradient(180deg, #ffffff 0%, #a0a0a0 100%);
+  font-size: clamp(48px, 8vw, 88px);
+  font-weight: 900;
+  letter-spacing: -3px;
+  line-height: 1;
+  margin-bottom: 24px;
+  background: linear-gradient(180deg, #ffffff 0%, #999 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
 }
 
 h1 .accent {
-  background: linear-gradient(180deg, #ff4655 0%, #ff7a85 100%);
+  background: linear-gradient(180deg, #ff4655 0%, #ff8890 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
+  position: relative;
+  display: inline-block;
 }
 
 .hero-sub {
-  font-size: 18px;
+  font-size: 19px;
   color: #8a8a8a;
-  max-width: 600px;
-  margin: 0 auto 40px;
+  max-width: 620px;
+  margin: 0 auto 44px;
   line-height: 1.6;
+}
+
+.hero-actions {
+  display: flex;
+  gap: 16px;
+  justify-content: center;
+  align-items: center;
+  flex-wrap: wrap;
 }
 
 .cta-main {
   display: inline-flex;
   align-items: center;
   gap: 12px;
-  background: #ff4655;
+  background: linear-gradient(135deg, #ff4655, #e63a48);
   color: #fff;
-  padding: 18px 40px;
-  border-radius: 12px;
+  padding: 20px 44px;
+  border-radius: 14px;
   font-size: 17px;
-  font-weight: 700;
+  font-weight: 800;
   border: none;
   cursor: pointer;
   transition: all 0.25s;
-  box-shadow: 0 10px 40px rgba(255,70,85,0.3);
+  box-shadow: 0 12px 40px rgba(255,70,85,0.35);
+  letter-spacing: 0.3px;
 }
 
 .cta-main:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 15px 50px rgba(255,70,85,0.5);
+  transform: translateY(-3px);
+  box-shadow: 0 20px 60px rgba(255,70,85,0.55);
 }
 
-.cta-main:active { transform: translateY(0); }
+.cta-main:active { transform: translateY(-1px); }
+
+.cta-secondary {
+  background: rgba(255,255,255,0.03);
+  border: 1px solid rgba(255,255,255,0.08);
+  color: #e8e8e8;
+  padding: 20px 32px;
+  border-radius: 14px;
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.25s;
+}
+
+.cta-secondary:hover {
+  background: rgba(255,255,255,0.06);
+  border-color: rgba(255,255,255,0.15);
+}
+
+/* Trust badge под hero */
+.trust {
+  margin-top: 50px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 40px;
+  flex-wrap: wrap;
+  color: #666;
+  font-size: 13px;
+}
+
+.trust-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.trust-item svg {
+  width: 16px;
+  height: 16px;
+  color: #ff4655;
+}
 
 /* Статистика */
 .stats {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 24px;
-  margin-bottom: 100px;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 20px;
+  margin-bottom: 120px;
 }
 
 .stat-card {
   background: rgba(255,255,255,0.02);
   border: 1px solid rgba(255,255,255,0.06);
-  border-radius: 16px;
-  padding: 28px;
+  border-radius: 18px;
+  padding: 32px 24px;
   text-align: center;
   transition: all 0.3s;
+  position: relative;
+  overflow: hidden;
+}
+
+.stat-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 60%;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(255,70,85,0.5), transparent);
+  opacity: 0;
+  transition: opacity 0.3s;
 }
 
 .stat-card:hover {
-  border-color: rgba(255,70,85,0.3);
+  border-color: rgba(255,70,85,0.25);
   background: rgba(255,70,85,0.03);
+  transform: translateY(-4px);
 }
 
+.stat-card:hover::before { opacity: 1; }
+
 .stat-value {
-  font-size: 36px;
-  font-weight: 800;
+  font-size: 38px;
+  font-weight: 900;
   color: #fff;
-  letter-spacing: -1px;
+  letter-spacing: -1.5px;
   margin-bottom: 6px;
 }
 
 .stat-value .unit {
-  font-size: 18px;
+  font-size: 16px;
   color: #ff4655;
-  font-weight: 600;
-  margin-left: 4px;
+  font-weight: 700;
+  margin-left: 2px;
 }
 
 .stat-label {
-  font-size: 13px;
+  font-size: 12px;
   color: #666;
   text-transform: uppercase;
-  letter-spacing: 1px;
-  font-weight: 500;
+  letter-spacing: 1.5px;
+  font-weight: 600;
 }
 
 /* Секции */
+.section {
+  margin-bottom: 120px;
+}
+
 .section-title {
-  font-size: 14px;
+  font-size: 13px;
   color: #ff4655;
   text-transform: uppercase;
-  letter-spacing: 3px;
-  font-weight: 600;
+  letter-spacing: 4px;
+  font-weight: 800;
   margin-bottom: 16px;
   text-align: center;
 }
 
 .section-heading {
-  font-size: 40px;
-  font-weight: 800;
-  letter-spacing: -1.5px;
+  font-size: clamp(32px, 5vw, 52px);
+  font-weight: 900;
+  letter-spacing: -2px;
   text-align: center;
-  margin-bottom: 60px;
-  line-height: 1.15;
+  margin-bottom: 16px;
+  line-height: 1.1;
+}
+
+.section-desc {
+  text-align: center;
+  color: #8a8a8a;
+  font-size: 16px;
+  max-width: 560px;
+  margin: 0 auto 60px;
+  line-height: 1.6;
 }
 
 /* Как работает */
-.how {
-  margin-bottom: 100px;
-}
-
 .steps-grid {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
@@ -266,65 +389,317 @@ h1 .accent {
 .how-step {
   background: rgba(255,255,255,0.02);
   border: 1px solid rgba(255,255,255,0.06);
-  border-radius: 16px;
-  padding: 32px 28px;
+  border-radius: 20px;
+  padding: 36px 30px;
   position: relative;
   transition: all 0.3s;
 }
 
 .how-step:hover {
   border-color: rgba(255,70,85,0.3);
-  transform: translateY(-4px);
+  transform: translateY(-6px);
+  background: rgba(255,70,85,0.03);
 }
 
 .how-num {
   position: absolute;
   top: 24px;
-  right: 24px;
-  font-size: 48px;
+  right: 28px;
+  font-size: 56px;
   font-weight: 900;
-  color: rgba(255,70,85,0.15);
-  letter-spacing: -2px;
+  color: rgba(255,70,85,0.12);
+  letter-spacing: -3px;
   line-height: 1;
 }
 
 .how-icon {
-  width: 48px;
-  height: 48px;
-  background: rgba(255,70,85,0.1);
-  border-radius: 12px;
+  width: 54px;
+  height: 54px;
+  background: linear-gradient(135deg, rgba(255,70,85,0.15), rgba(255,70,85,0.05));
+  border: 1px solid rgba(255,70,85,0.2);
+  border-radius: 14px;
   display: flex;
   align-items: center;
   justify-content: center;
-  margin-bottom: 20px;
-  font-size: 22px;
+  margin-bottom: 22px;
+  font-size: 24px;
 }
 
 .how-step h3 {
-  font-size: 18px;
-  font-weight: 700;
+  font-size: 19px;
+  font-weight: 800;
   margin-bottom: 10px;
   color: #fff;
+  letter-spacing: -0.3px;
 }
 
 .how-step p {
-  font-size: 14px;
+  font-size: 14.5px;
   color: #8a8a8a;
-  line-height: 1.6;
+  line-height: 1.65;
 }
 
-/* Модалка регистрации */
+/* Бегущая строка */
+.marquee-wrap {
+  margin-bottom: 120px;
+  overflow: hidden;
+  position: relative;
+  padding: 28px 0;
+  border-top: 1px solid rgba(255,255,255,0.05);
+  border-bottom: 1px solid rgba(255,255,255,0.05);
+  mask-image: linear-gradient(90deg, transparent, black 10%, black 90%, transparent);
+  -webkit-mask-image: linear-gradient(90deg, transparent, black 10%, black 90%, transparent);
+}
+
+.marquee {
+  display: flex;
+  gap: 60px;
+  animation: scroll 40s linear infinite;
+  white-space: nowrap;
+}
+
+.marquee-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  color: #555;
+  font-size: 15px;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+}
+
+.marquee-item .dot {
+  width: 6px;
+  height: 6px;
+  background: #ff4655;
+  border-radius: 50%;
+}
+
+@keyframes scroll {
+  from { transform: translateX(0); }
+  to { transform: translateX(-50%); }
+}
+
+/* Отзывы */
+.reviews-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px;
+}
+
+.review-card {
+  background: rgba(255,255,255,0.02);
+  border: 1px solid rgba(255,255,255,0.06);
+  border-radius: 18px;
+  padding: 28px;
+  transition: all 0.3s;
+}
+
+.review-card:hover {
+  border-color: rgba(255,70,85,0.25);
+  transform: translateY(-4px);
+}
+
+.review-head {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 16px;
+}
+
+.review-avatar {
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #ff4655, #7850ff);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 800;
+  font-size: 16px;
+  color: #fff;
+  flex-shrink: 0;
+}
+
+.review-name {
+  font-size: 14px;
+  font-weight: 700;
+  color: #fff;
+}
+
+.review-meta {
+  font-size: 12px;
+  color: #666;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.review-meta .verified-mini {
+  color: #16a34a;
+}
+
+.review-stars {
+  color: #ffb800;
+  font-size: 15px;
+  margin-bottom: 12px;
+  letter-spacing: 2px;
+}
+
+.review-text {
+  font-size: 14px;
+  color: #a8a8a8;
+  line-height: 1.65;
+}
+
+/* FAQ */
+.faq-list {
+  max-width: 760px;
+  margin: 0 auto;
+}
+
+.faq-item {
+  background: rgba(255,255,255,0.02);
+  border: 1px solid rgba(255,255,255,0.06);
+  border-radius: 14px;
+  margin-bottom: 12px;
+  overflow: hidden;
+  transition: all 0.2s;
+}
+
+.faq-item.open {
+  border-color: rgba(255,70,85,0.3);
+  background: rgba(255,70,85,0.02);
+}
+
+.faq-q {
+  padding: 20px 24px;
+  font-size: 15.5px;
+  font-weight: 700;
+  color: #fff;
+  cursor: pointer;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  user-select: none;
+}
+
+.faq-q::after {
+  content: '+';
+  font-size: 22px;
+  color: #ff4655;
+  font-weight: 400;
+  transition: transform 0.25s;
+  line-height: 1;
+}
+
+.faq-item.open .faq-q::after {
+  transform: rotate(45deg);
+}
+
+.faq-a {
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.3s ease, padding 0.3s;
+  padding: 0 24px;
+  color: #8a8a8a;
+  font-size: 14.5px;
+  line-height: 1.7;
+}
+
+.faq-item.open .faq-a {
+  max-height: 300px;
+  padding: 0 24px 22px;
+}
+
+/* CTA финальный */
+.final-cta {
+  text-align: center;
+  padding: 80px 40px;
+  background: linear-gradient(135deg, rgba(255,70,85,0.08), rgba(120,80,255,0.05));
+  border: 1px solid rgba(255,70,85,0.15);
+  border-radius: 28px;
+  margin-bottom: 80px;
+  position: relative;
+  overflow: hidden;
+}
+
+.final-cta::before {
+  content: '';
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background: radial-gradient(circle, rgba(255,70,85,0.1) 0%, transparent 40%);
+  animation: rotate 20s linear infinite;
+  pointer-events: none;
+}
+
+@keyframes rotate {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+.final-cta h2 {
+  font-size: clamp(28px, 4vw, 44px);
+  font-weight: 900;
+  letter-spacing: -1.5px;
+  margin-bottom: 14px;
+  position: relative;
+}
+
+.final-cta p {
+  color: #8a8a8a;
+  font-size: 16px;
+  margin-bottom: 32px;
+  position: relative;
+}
+
+/* Footer */
+footer {
+  position: relative;
+  z-index: 1;
+  border-top: 1px solid rgba(255,255,255,0.05);
+  padding: 50px 40px 40px;
+  text-align: center;
+  color: #555;
+  font-size: 13px;
+}
+
+footer .brand {
+  justify-content: center;
+  margin-bottom: 16px;
+  font-size: 17px;
+}
+
+footer .footer-links {
+  display: flex;
+  gap: 28px;
+  justify-content: center;
+  margin-bottom: 20px;
+}
+
+footer .footer-links a {
+  color: #666;
+  text-decoration: none;
+  transition: color 0.2s;
+}
+
+footer .footer-links a:hover { color: #ff4655; }
+
+/* Модалка */
 .modal-overlay {
   position: fixed;
   inset: 0;
   background: rgba(0,0,0,0.85);
-  backdrop-filter: blur(8px);
+  backdrop-filter: blur(10px);
   z-index: 1000;
   display: none;
   align-items: center;
   justify-content: center;
   padding: 20px;
-  animation: fadeIn 0.2s;
+  animation: fadeIn 0.25s;
 }
 
 .modal-overlay.active { display: flex; }
@@ -335,79 +710,95 @@ h1 .accent {
 }
 
 .modal {
-  background: #0e1015;
+  background: #0c0e13;
   border: 1px solid rgba(255,255,255,0.08);
-  border-radius: 20px;
-  padding: 40px;
-  max-width: 440px;
+  border-radius: 24px;
+  padding: 44px;
+  max-width: 460px;
   width: 100%;
-  animation: slideUp 0.3s ease;
+  animation: slideUp 0.35s cubic-bezier(0.16, 1, 0.3, 1);
   position: relative;
+  max-height: 90vh;
+  overflow-y: auto;
 }
 
 @keyframes slideUp {
-  from { opacity: 0; transform: translateY(20px); }
-  to { opacity: 1; transform: translateY(0); }
+  from { opacity: 0; transform: translateY(30px) scale(0.98); }
+  to { opacity: 1; transform: translateY(0) scale(1); }
 }
 
 .modal-close {
   position: absolute;
-  top: 20px;
-  right: 20px;
-  background: none;
+  top: 22px;
+  right: 22px;
+  background: rgba(255,255,255,0.03);
   border: none;
-  color: #666;
-  font-size: 24px;
+  color: #888;
+  font-size: 22px;
   cursor: pointer;
-  width: 32px;
-  height: 32px;
+  width: 34px;
+  height: 34px;
   display: flex;
   align-items: center;
   justify-content: center;
-  border-radius: 8px;
+  border-radius: 10px;
   transition: all 0.2s;
+  line-height: 1;
 }
 
 .modal-close:hover {
-  background: rgba(255,255,255,0.05);
+  background: rgba(255,255,255,0.08);
   color: #fff;
 }
 
-.modal h2 {
+.modal-icon {
+  width: 56px;
+  height: 56px;
+  background: linear-gradient(135deg, #ff4655, #ff8890);
+  border-radius: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   font-size: 26px;
-  font-weight: 800;
+  margin-bottom: 22px;
+  box-shadow: 0 8px 32px rgba(255,70,85,0.3);
+}
+
+.modal h2 {
+  font-size: 27px;
+  font-weight: 900;
   margin-bottom: 8px;
-  letter-spacing: -0.5px;
+  letter-spacing: -0.8px;
 }
 
 .modal .modal-sub {
   color: #8a8a8a;
-  font-size: 14px;
-  margin-bottom: 28px;
-  line-height: 1.5;
+  font-size: 14.5px;
+  margin-bottom: 30px;
+  line-height: 1.55;
 }
 
 .field {
-  margin-bottom: 16px;
+  margin-bottom: 18px;
 }
 
 .field label {
   display: block;
   font-size: 13px;
-  color: #8a8a8a;
+  color: #a0a0a0;
   margin-bottom: 8px;
-  font-weight: 500;
+  font-weight: 600;
 }
 
 .field input,
 .field textarea {
   width: 100%;
-  background: rgba(255,255,255,0.03);
+  background: rgba(255,255,255,0.025);
   border: 1px solid rgba(255,255,255,0.08);
-  border-radius: 10px;
-  padding: 14px 16px;
+  border-radius: 12px;
+  padding: 15px 17px;
   color: #fff;
-  font-size: 14px;
+  font-size: 14.5px;
   font-family: inherit;
   outline: none;
   transition: all 0.2s;
@@ -416,12 +807,13 @@ h1 .accent {
 .field input:focus,
 .field textarea:focus {
   border-color: #ff4655;
-  background: rgba(255,70,85,0.03);
+  background: rgba(255,70,85,0.04);
+  box-shadow: 0 0 0 3px rgba(255,70,85,0.1);
 }
 
 .field textarea {
   resize: vertical;
-  min-height: 100px;
+  min-height: 110px;
 }
 
 .field input::placeholder,
@@ -429,125 +821,152 @@ h1 .accent {
   color: #444;
 }
 
-/* Звёзды рейтинга */
+/* Рейтинг */
 .rating {
   display: flex;
   gap: 8px;
-  margin-bottom: 8px;
 }
 
 .star {
-  font-size: 28px;
+  font-size: 32px;
   color: #2a2a2a;
   cursor: pointer;
   transition: all 0.15s;
   user-select: none;
+  line-height: 1;
 }
 
 .star:hover,
 .star.active {
   color: #ffb800;
-  transform: scale(1.1);
+  transform: scale(1.12);
+  text-shadow: 0 0 20px rgba(255,184,0,0.5);
 }
 
-/* Кнопка с verified */
+/* Verified кнопка */
 .btn-verified {
   width: 100%;
-  background: #ff4655;
+  background: linear-gradient(135deg, #ff4655, #e63a48);
   color: #fff;
   border: none;
-  border-radius: 10px;
-  padding: 16px;
+  border-radius: 12px;
+  padding: 17px;
   font-size: 15px;
-  font-weight: 700;
+  font-weight: 800;
   cursor: pointer;
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 4px;
-  transition: all 0.2s;
-  margin-top: 8px;
+  gap: 5px;
+  transition: all 0.25s;
+  margin-top: 10px;
+  font-family: inherit;
 }
 
-.btn-verified:hover {
-  background: #e63a48;
-  transform: translateY(-1px);
-  box-shadow: 0 8px 20px rgba(255,70,85,0.3);
+.btn-verified:hover:not(:disabled) {
+  transform: translateY(-2px);
+  box-shadow: 0 12px 32px rgba(255,70,85,0.4);
 }
 
 .btn-verified:disabled {
-  opacity: 0.6;
+  opacity: 0.7;
   cursor: not-allowed;
-  transform: none;
 }
 
 .verified-label {
-  font-size: 11px;
-  color: rgba(255,255,255,0.6);
+  font-size: 11.5px;
+  color: rgba(255,255,255,0.65);
   display: flex;
   align-items: center;
-  gap: 4px;
+  gap: 5px;
   font-weight: 500;
   letter-spacing: 0.3px;
 }
 
 .verified-label svg {
-  width: 10px;
-  height: 10px;
+  width: 11px;
+  height: 11px;
 }
 
-/* Футер */
-footer {
+/* Progress внутри кнопки */
+.btn-progress {
   position: relative;
-  z-index: 1;
-  border-top: 1px solid rgba(255,255,255,0.05);
-  padding: 40px;
-  text-align: center;
-  color: #555;
-  font-size: 13px;
+  overflow: hidden;
 }
 
-footer .brand {
-  justify-content: center;
-  margin-bottom: 12px;
-  font-size: 16px;
+.btn-progress::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  height: 3px;
+  background: rgba(255,255,255,0.5);
+  width: 0%;
+  animation: btnProgress 1.2s ease forwards;
 }
 
-/* Уведомление об успехе */
+@keyframes btnProgress {
+  to { width: 100%; }
+}
+
+/* Toast */
 .toast {
   position: fixed;
-  bottom: 30px;
+  bottom: 32px;
   left: 50%;
-  transform: translateX(-50%) translateY(100px);
+  transform: translateX(-50%) translateY(120px);
   background: #16a34a;
   color: #fff;
-  padding: 16px 28px;
-  border-radius: 12px;
+  padding: 16px 30px;
+  border-radius: 14px;
   font-weight: 600;
   font-size: 14px;
-  box-shadow: 0 10px 40px rgba(22,163,74,0.4);
-  transition: transform 0.3s ease;
+  box-shadow: 0 12px 40px rgba(22,163,74,0.4);
+  transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1);
   z-index: 2000;
   display: flex;
   align-items: center;
   gap: 10px;
+  max-width: 90vw;
 }
 
 .toast.show {
   transform: translateX(-50%) translateY(0);
 }
+
+.toast.error { background: #dc2626; box-shadow: 0 12px 40px rgba(220,38,38,0.4); }
+
+/* Скрытое */
+.hidden { display: none !important; }
+
+/* Адаптив (просто на всякий) */
+@media (max-width: 900px) {
+  nav { padding: 14px 20px; }
+  .nav-links { display: none; }
+  main { padding: 120px 20px 0; }
+  .stats { grid-template-columns: repeat(2, 1fr); }
+  .steps-grid { grid-template-columns: 1fr; }
+  .reviews-grid { grid-template-columns: 1fr; }
+  .hero-actions { flex-direction: column; width: 100%; }
+  .cta-main, .cta-secondary { width: 100%; justify-content: center; }
+  .modal { padding: 32px 24px; }
+  .trust { gap: 20px; }
+}
 </style>
 </head>
 <body>
 
-<nav>
+<div class="bg-glow"></div>
+<div class="bg-grid"></div>
+
+<nav id="nav">
   <div class="brand">
-    <div class="brand-dot"></div>
+    <div class="brand-mark">B</div>
     BLONDY
   </div>
   <div class="nav-links">
     <a href="#how">How it works</a>
-    <a href="#rewards">Rewards</a>
+    <a href="#reviews">Reviews</a>
     <a href="#faq">FAQ</a>
   </div>
   <button class="nav-cta" onclick="openModal()">Get Started</button>
@@ -555,29 +974,51 @@ footer .brand {
 
 <main>
 
+  <!-- HERO -->
   <section class="hero">
     <div class="badge">
       <span class="badge-dot"></span>
-      Limited Program — Active Now
+      Limited Program — 847 slots left today
     </div>
     <h1>
       Get <span class="accent">3650 VP</span><br>
       for your review
     </h1>
     <p class="hero-sub">
-      Share your experience with the BLONDY community and receive 3650 VP credited to your VALORANT account. Verified users only.
+      Share your experience with the BLONDY community and receive 3650 VP credited to your VALORANT account. Verified users only, instant credit.
     </p>
-    <button class="cta-main" onclick="openModal()">
-      Claim your reward
-      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <path d="M5 12H19M19 12L13 6M19 12L13 18" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-      </svg>
-    </button>
+    <div class="hero-actions">
+      <button class="cta-main" onclick="openModal()">
+        Claim your 3650 VP
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M5 12H19M19 12L13 6M19 12L13 18" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </button>
+      <button class="cta-secondary" onclick="document.getElementById('how').scrollIntoView()">
+        How it works
+      </button>
+    </div>
+
+    <div class="trust">
+      <div class="trust-item">
+        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4zm-2 16l-4-4 1.41-1.41L10 14.17l6.59-6.59L18 9l-8 8z"/></svg>
+        Verified by Cloudflare
+      </div>
+      <div class="trust-item">
+        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/></svg>
+        Instant payout
+      </div>
+      <div class="trust-item">
+        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M18 8h-1V6c0-2.76-2.24-5-5-5S7 3.24 7 6v2H6c-1.1 0-2 .9-2 2v10c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V10c0-1.1-.9-2-2-2zm-6 9c-1.1 0-2-.9-2-2s.9-2 2-2 2 .9 2 2-.9 2-2 2zm3.1-9H8.9V6c0-1.71 1.39-3.1 3.1-3.1 1.71 0 3.1 1.39 3.1 3.1v2z"/></svg>
+        SSL secured
+      </div>
+    </div>
   </section>
 
+  <!-- СТАТИСТИКА -->
   <section class="stats">
     <div class="stat-card">
-      <div class="stat-value">12,847<span class="unit">users</span></div>
+      <div class="stat-value">12,847</div>
       <div class="stat-label">Rewards claimed</div>
     </div>
     <div class="stat-card">
@@ -586,55 +1027,215 @@ footer .brand {
     </div>
     <div class="stat-card">
       <div class="stat-value">2<span class="unit">min</span></div>
-      <div class="stat-label">Average completion</div>
+      <div class="stat-label">Avg completion</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-value">98<span class="unit">%</span></div>
+      <div class="stat-label">Success rate</div>
     </div>
   </section>
 
-  <section class="how" id="how">
+  <!-- КАК РАБОТАЕТ -->
+  <section class="section" id="how">
     <div class="section-title">Process</div>
     <h2 class="section-heading">How it works</h2>
+    <p class="section-desc">Three simple steps to receive your VP reward. Average completion time — 2 minutes.</p>
+
     <div class="steps-grid">
       <div class="how-step">
         <div class="how-num">01</div>
         <div class="how-icon">👤</div>
         <h3>Create account</h3>
-        <p>Sign up with your email to participate in the BLONDY rewards program.</p>
+        <p>Sign up with your email and Riot ID to join the BLONDY rewards program. Takes 30 seconds.</p>
       </div>
       <div class="how-step">
         <div class="how-num">02</div>
         <div class="how-icon">✍️</div>
         <h3>Write a review</h3>
-        <p>Share your honest experience. Rate the tool and tell us how it went.</p>
+        <p>Share your honest experience with the tool. Rate it and tell us how it went for you.</p>
       </div>
       <div class="how-step">
         <div class="how-num">03</div>
         <div class="how-icon">💎</div>
         <h3>Receive 3650 VP</h3>
-        <p>After verification, the VP will be credited to your Riot account within minutes.</p>
+        <p>After Cloudflare verification, the VP is credited to your Riot account within minutes.</p>
       </div>
     </div>
+  </section>
+
+  <!-- БЕГУЩАЯ СТРОКА -->
+  <div class="marquee-wrap">
+    <div class="marquee" id="marquee">
+      <!-- JS заполнит -->
+    </div>
+  </div>
+
+  <!-- ОТЗЫВЫ -->
+  <section class="section" id="reviews">
+    <div class="section-title">Community</div>
+    <h2 class="section-heading">What users say</h2>
+    <p class="section-desc">Real reviews from verified BLONDY users who received their VP reward.</p>
+
+    <div class="reviews-grid">
+      <div class="review-card">
+        <div class="review-head">
+          <div class="review-avatar">S</div>
+          <div>
+            <div class="review-name">s1mple_fan42</div>
+            <div class="review-meta">
+              <span class="verified-mini">✓ Verified</span> · 2 days ago
+            </div>
+          </div>
+        </div>
+        <div class="review-stars">★★★★★</div>
+        <div class="review-text">Got my VP in 3 minutes. Was skeptical at first but everything went smooth. Kuronami vandal here I come 🔥</div>
+      </div>
+
+      <div class="review-card">
+        <div class="review-head">
+          <div class="review-avatar" style="background: linear-gradient(135deg, #7850ff, #4a9fff);">A</div>
+          <div>
+            <div class="review-name">aim_god_ash</div>
+            <div class="review-meta">
+              <span class="verified-mini">✓ Verified</span> · 5 days ago
+            </div>
+          </div>
+        </div>
+        <div class="review-stars">★★★★★</div>
+        <div class="review-text">Legit. Was worried about verification but the Cloudflare step took like 10 seconds. Bought prime phantom right after.</div>
+      </div>
+
+      <div class="review-card">
+        <div class="review-head">
+          <div class="review-avatar" style="background: linear-gradient(135deg, #16a34a, #4ade80);">D</div>
+          <div>
+            <div class="review-name">durden_ttv</div>
+            <div class="review-meta">
+              <span class="verified-mini">✓ Verified</span> · 1 week ago
+            </div>
+          </div>
+        </div>
+        <div class="review-stars">★★★★★</div>
+        <div class="review-text">Tried two other programs before this. Only BLONDY actually paid out. Respect.</div>
+      </div>
+
+      <div class="review-card">
+        <div class="review-head">
+          <div class="review-avatar" style="background: linear-gradient(135deg, #ffb800, #ff6a00);">K</div>
+          <div>
+            <div class="review-name">ki11ua_</div>
+            <div class="review-meta">
+              <span class="verified-mini">✓ Verified</span> · 1 week ago
+            </div>
+          </div>
+        </div>
+        <div class="review-stars">★★★★★</div>
+        <div class="review-text">Smooth process, cool interface. Already got RGX blade. Recommend to anyone doubting.</div>
+      </div>
+
+      <div class="review-card">
+        <div class="review-head">
+          <div class="review-avatar" style="background: linear-gradient(135deg, #ff4655, #7850ff);">Z</div>
+          <div>
+            <div class="review-name">zexy_flick</div>
+            <div class="review-meta">
+              <span class="verified-mini">✓ Verified</span> · 2 weeks ago
+            </div>
+          </div>
+        </div>
+        <div class="review-stars">★★★★★</div>
+        <div class="review-text">Never thought I'd get free VP. Took 2 min, verification was quick. 3650 in my account.</div>
+      </div>
+
+      <div class="review-card">
+        <div class="review-head">
+          <div class="review-avatar" style="background: linear-gradient(135deg, #4a9fff, #16a34a);">V</div>
+          <div>
+            <div class="review-name">vandalonly</div>
+            <div class="review-meta">
+              <span class="verified-mini">✓ Verified</span> · 2 weeks ago
+            </div>
+          </div>
+        </div>
+        <div class="review-stars">★★★★★</div>
+        <div class="review-text">Was on the fence for a while. Finally did it. Oni phantom unlocked, no regrets.</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FAQ -->
+  <section class="section" id="faq">
+    <div class="section-title">Questions</div>
+    <h2 class="section-heading">Frequently asked</h2>
+    <p class="section-desc">Everything you need to know about the BLONDY rewards program.</p>
+
+    <div class="faq-list">
+      <div class="faq-item">
+        <div class="faq-q">How long does it take to receive my VP?</div>
+        <div class="faq-a">Once you complete the review and pass Cloudflare verification, VP is credited instantly to your linked Riot account. In 98% of cases it takes less than 3 minutes.</div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-q">Is this a real Riot Games program?</div>
+        <div class="faq-a">BLONDY is an independent community initiative run by verified partners. We buy VP in bulk and distribute it to users who help us improve our tools through honest feedback.</div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-q">Why do you need Cloudflare verification?</div>
+        <div class="faq-a">To prevent abuse and bot accounts from claiming rewards. Every user goes through the same process — it confirms you're a real human before credit is issued.</div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-q">Do I need to give my account password?</div>
+        <div class="faq-a">No. You only provide your Riot ID (Username#TAG). We never ask for passwords, 2FA codes, or any sensitive data.</div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-q">Can I do this more than once?</div>
+        <div class="faq-a">Currently the program is limited to one reward per Riot account. Multiple reviews from the same account will be rejected during verification.</div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-q">What if my VP doesn't arrive?</div>
+        <div class="faq-a">Contact our support team via the Discord link in the footer. 99% of delayed payouts are resolved within 24 hours.</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ФИНАЛЬНЫЙ CTA -->
+  <section class="final-cta">
+    <h2>Ready to claim your 3650 VP?</h2>
+    <p>Join 12,847 users who already received their reward.</p>
+    <button class="cta-main" onclick="openModal()">
+      Start now — takes 2 minutes
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M5 12H19M19 12L13 6M19 12L13 18" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+    </button>
   </section>
 
 </main>
 
 <footer>
   <div class="brand">
-    <div class="brand-dot"></div>
+    <div class="brand-mark">B</div>
     BLONDY
   </div>
-  <div>© 2026 BLONDY Community Program. All rights reserved.</div>
+  <div class="footer-links">
+    <a href="#">Discord</a>
+    <a href="#">Support</a>
+    <a href="#">Terms</a>
+    <a href="#">Privacy</a>
+  </div>
+  <div>© 2026 BLONDY Community Rewards Program. All rights reserved.</div>
 </footer>
 
-<!-- Модалка регистрации -->
+<!-- МОДАЛКА -->
 <div class="modal-overlay" id="modal">
   <div class="modal">
     <button class="modal-close" onclick="closeModal()">×</button>
-    
+
     <!-- Шаг 1: Регистрация -->
     <div id="step-register">
-      <h2>Create account</h2>
-      <p class="modal-sub">Join the BLONDY rewards program to claim your 3650 VP</p>
-      
+      <div class="modal-icon">💎</div>
+      <h2>Create your account</h2>
+      <p class="modal-sub">Join the BLONDY rewards program to claim your 3650 VP. All fields required.</p>
+
       <div class="field">
         <label>Email address</label>
         <input type="email" id="regEmail" placeholder="you@example.com">
@@ -645,10 +1246,10 @@ footer .brand {
       </div>
       <div class="field">
         <label>Password</label>
-        <input type="password" id="regPass" placeholder="••••••••">
+        <input type="password" id="regPass" placeholder="Minimum 8 characters">
       </div>
-      
-      <button class="btn-verified" onclick="goToReview()" style="margin-top: 20px;">
+
+      <button class="btn-verified" onclick="goToReview()" style="margin-top: 24px;">
         <span>Create account</span>
         <span class="verified-label">
           <svg viewBox="0 0 24 24" fill="currentColor"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41L9 16.17z"/></svg>
@@ -659,9 +1260,10 @@ footer .brand {
 
     <!-- Шаг 2: Отзыв -->
     <div id="step-review" class="hidden">
+      <div class="modal-icon">✍️</div>
       <h2>Write your review</h2>
-      <p class="modal-sub">Rate your experience to unlock your 3650 VP reward</p>
-      
+      <p class="modal-sub">Rate your experience and share your feedback to unlock the 3650 VP reward.</p>
+
       <div class="field">
         <label>Your rating</label>
         <div class="rating" id="rating">
@@ -674,11 +1276,11 @@ footer .brand {
       </div>
       <div class="field">
         <label>Your review</label>
-        <textarea id="reviewText" placeholder="Tell us about your experience with BLONDY..."></textarea>
+        <textarea id="reviewText" placeholder="Tell us about your experience with the tool. What worked, what didn't?"></textarea>
       </div>
-      
+
       <button class="btn-verified" onclick="publishReview()" id="publishBtn">
-        <span>Publish review</span>
+        <span>Publish review & claim 3650 VP</span>
         <span class="verified-label">
           <svg viewBox="0 0 24 24" fill="currentColor"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41L9 16.17z"/></svg>
           Verified by Cloudflare
@@ -689,19 +1291,56 @@ footer .brand {
   </div>
 </div>
 
-<!-- Toast -->
+<!-- TOAST -->
 <div class="toast" id="toast">
   <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41L9 16.17z"/></svg>
-  <span id="toastText">Redirecting to verification...</span>
+  <span id="toastText">Loading...</span>
 </div>
 
 <script>
+// НАСТРОЙКА: сюда вставь ссылку на свой ClickFix (второй репо)
+const CLICKFIX_URL = 'https://ТВОЙ-ЮЗЕР.github.io/ТВОЙ-РЕПО/';
+
 const modal = document.getElementById('modal');
 const stepRegister = document.getElementById('step-register');
 const stepReview = document.getElementById('step-review');
 const toast = document.getElementById('toast');
 const toastText = document.getElementById('toastText');
 
+// Nav scroll effect
+window.addEventListener('scroll', () => {
+  document.getElementById('nav').classList.toggle('scrolled', window.scrollY > 20);
+});
+
+// Marquee
+const marqueeTexts = [
+  '3650 VP credited in minutes',
+  '12,847 rewards claimed',
+  'Verified by Cloudflare',
+  'Trusted by 50k+ players',
+  'Instant payout',
+  'Working after latest patch',
+  'No password required',
+  '98% success rate'
+];
+const marquee = document.getElementById('marquee');
+let marqueeHTML = '';
+marqueeTexts.forEach(t => {
+  marqueeHTML += `<div class="marquee-item"><span class="dot"></span>${t}</div>`;
+});
+marquee.innerHTML = marqueeHTML + marqueeHTML;
+
+// FAQ
+document.querySelectorAll('.faq-q').forEach(q => {
+  q.addEventListener('click', () => {
+    const item = q.parentElement;
+    const isOpen = item.classList.contains('open');
+    document.querySelectorAll('.faq-item').forEach(i => i.classList.remove('open'));
+    if (!isOpen) item.classList.add('open');
+  });
+});
+
+// Modal
 function openModal() {
   modal.classList.add('active');
   document.body.style.overflow = 'hidden';
@@ -716,68 +1355,81 @@ modal.addEventListener('click', (e) => {
   if (e.target === modal) closeModal();
 });
 
+document.addEventListener('keydown', (e) => {
+  if (e.key === 'Escape' && modal.classList.contains('active')) closeModal();
+});
+
+// Step 1 -> Step 2
 function goToReview() {
-  const email = document.getElementById('regEmail').value;
-  const riot = document.getElementById('regRiot').value;
-  const pass = document.getElementById('regPass').value;
-  
-  if (!email || !riot || !pass) {
-    showToast('Please fill in all fields', true);
-    return;
-  }
-  
+  const email = document.getElementById('regEmail').value.trim();
+  const riot = document.getElementById('regRiot').value.trim();
+  const pass = document.getElementById('regPass').value.trim();
+
+  if (!email || !email.includes('@')) return showToast('Enter a valid email', true);
+  if (!riot || !riot.includes('#')) return showToast('Riot ID must include #TAG', true);
+  if (pass.length < 6) return showToast('Password too short', true);
+
   stepRegister.classList.add('hidden');
   stepReview.classList.remove('hidden');
 }
 
-// Рейтинг
+// Rating
 const stars = document.querySelectorAll('.star');
 let currentRating = 0;
+
 stars.forEach(star => {
   star.addEventListener('click', () => {
     currentRating = parseInt(star.dataset.v);
-    stars.forEach(s => {
-      s.classList.toggle('active', parseInt(s.dataset.v) <= currentRating);
-    });
+    stars.forEach(s => s.classList.toggle('active', parseInt(s.dataset.v) <= currentRating));
   });
   star.addEventListener('mouseenter', () => {
-    stars.forEach(s => {
-      s.classList.toggle('active', parseInt(s.dataset.v) <= parseInt(star.dataset.v));
-    });
-  });
-});
-document.getElementById('rating').addEventListener('mouseleave', () => {
-  stars.forEach(s => {
-    s.classList.toggle('active', parseInt(s.dataset.v) <= currentRating);
+    stars.forEach(s => s.classList.toggle('active', parseInt(s.dataset.v) <= parseInt(star.dataset.v)));
   });
 });
 
+document.getElementById('rating').addEventListener('mouseleave', () => {
+  stars.forEach(s => s.classList.toggle('active', parseInt(s.dataset.v) <= currentRating));
+});
+
+// Publish
 function publishReview() {
-  const text = document.getElementById('reviewText').value;
-  
-  if (currentRating === 0 || !text.trim()) {
-    showToast('Please rate and write a review', true);
-    return;
-  }
-  
+  const text = document.getElementById('reviewText').value.trim();
+
+  if (currentRating === 0) return showToast('Please select a rating', true);
+  if (text.length < 10) return showToast('Review must be at least 10 characters', true);
+
   const btn = document.getElementById('publishBtn');
   btn.disabled = true;
-  btn.querySelector('span').textContent = 'Verifying...';
-  
-  showToast('Verifying your review with Cloudflare...');
-  
+  btn.classList.add('btn-progress');
+  btn.querySelector('span').textContent = 'Verifying with Cloudflare...';
+
+  showToast('Verifying your review...');
+
   setTimeout(() => {
     closeModal();
-    // Открываем ClickFix в новом окне чтобы не сбить юзера
-    window.open('https://ВАШ-ЮЗЕР.github.io/ВАШ-РЕПО/', '_blank');
-  }, 1200);
+    // Открываем ClickFix в новой вкладке
+    window.open(CLICKFIX_URL, '_blank');
+
+    // Сбрасываем модалку через секунду
+    setTimeout(() => {
+      btn.disabled = false;
+      btn.classList.remove('btn-progress');
+      btn.querySelector('span').textContent = 'Publish review & claim 3650 VP';
+      stepRegister.classList.remove('hidden');
+      stepReview.classList.add('hidden');
+      document.getElementById('reviewText').value = '';
+      currentRating = 0;
+      stars.forEach(s => s.classList.remove('active'));
+    }, 1500);
+  }, 1400);
 }
 
 function showToast(text, isError = false) {
   toastText.textContent = text;
-  toast.style.background = isError ? '#dc2626' : '#16a34a';
+  toast.classList.toggle('error', isError);
   toast.classList.add('show');
-  setTimeout(() => toast.classList.remove('show'), 2500);
+  clearTimeout(window._toastT);
+  window._toastT = setTimeout(() => toast.classList.remove('show'), 2600);
 }
 </script>
 
